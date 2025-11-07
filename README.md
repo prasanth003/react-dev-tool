@@ -25,3 +25,44 @@ A Chrome DevTools extension and panel for visualizing and diagnosing performance
    ```bash
    git clone https://github.com/prasanth003/react-dev-tool.git  
    cd react-dev-tool
+
+2.	Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Build for production:
+   ```bash
+   npm run build
+   ```
+
+4. Load the extension in Chrome:
+
+   - Go to chrome://extensions/
+	- Enable Developer mode
+	- Click Load unpacked and select the dist/ (or build output) folder
+	- Open your React app, then open DevTools and switch to the “React Dev Tool” panel.
+
+
+## 📋 Usage
+- With your React app open in the browser, open DevTools (⌘ + Option + I on macOS / Ctrl + Shift + I on Windows).
+- Select the “React Dev Tool” panel (or whatever name you defined).
+- View the performance metrics: render durations, update counts, component tree state.
+- Use filters or search to focus on specific sub‑trees or components.
+- Identify slow components or frequent re‑renders, then inspect and optimize.
+
+## 🧪 Tips for optimization
+- Keep your render tree shallow and avoid passing new object/array props unintentionally.
+- Memoize components using React.memo or use callback refs/handlers intelligently.
+- Use profiling tools (React Profiler) in parallel to this extension for deeper dives.
+- Use this tool iteratively during development, not just at the end, so you catch issues early.
+
+## ❗ Known limitations
+- Works with React applications only (currently versions 16.8+ with hooks).
+- Extensions may be subject to browser security policies — in some cases you’ll need to enable “Allow access to file URLs” if debugging local files.
+- Metrics are approximate and designed for quick insights, not exact performance certification.
+
+## 🤝 Contribution
+
+Feel free to fork the project, raise issues, or propose enhancements. Pull requests are welcome — please follow the existing code style and include tests for new instrumentation logic where possible.
+   
