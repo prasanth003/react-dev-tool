@@ -1,4 +1,4 @@
-import type { DetectionResult } from "../shared/types";
+import type { DetectionResult, RenderEvents } from "../shared/types";
 
 window.addEventListener('message', (event) => {
     
@@ -12,6 +12,31 @@ window.addEventListener('message', (event) => {
             type: 'REACT_DETECTED',
             data: event.data.data as DetectionResult
         });
+    }
+
+    if (event.data.type === 'COMPONENT_RENDER_DATA') {
+        chrome.runtime.sendMessage({
+            type: 'COMPONENT_DATA',
+            data: event.data.data as RenderEvents
+        });
+    }
+
+});
+
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === 'HIGHLIGHT_COMPONENT') {
+        // Forward to main world
+        window.postMessage({
+            type: 'HIGHLIGHT_COMPONENT',
+            componentId: message.componentId
+        }, '*');
+    }
+    
+    if (message.type === 'UNHIGHLIGHT_COMPONENT') {
+        // Forward to main world
+        window.postMessage({
+            type: 'UNHIGHLIGHT_COMPONENT'
+        }, '*');
     }
 });
 
