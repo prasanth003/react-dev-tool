@@ -5,8 +5,6 @@ window.addEventListener('message', (event) => {
     if (event.source !== window) return;
     
     if (event.data.type === 'REACT_DETECTION_RESULT') {
-
-        console.log('Received detection result:', event.data);
         
         chrome.runtime.sendMessage({
             type: 'REACT_DETECTED',

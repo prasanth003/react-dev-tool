@@ -1,6 +1,6 @@
 import { getComponentId, getComponentName } from "./component-name";
 import { sendComponentData } from "./main-world";
-import { store } from "./store";
+import { store } from "../shared/store";
 
 export function startTracking() {
 
@@ -69,7 +69,6 @@ function walkFiberTree() {
         }
 
         if (!fiberRoot) {
-            console.log('⏳ Searching all elements for fiber...');
             const allDivs = document.querySelectorAll('div');
             
             for (let i = 0; i < Math.min(allDivs.length, 50); i++) {

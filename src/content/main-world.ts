@@ -1,7 +1,7 @@
 import { detectReact } from "./detect-react";
 import { highlightComponent, removeHighlight } from "./highlight-component";
 import { analyzePerformance } from "./performance-analyze";
-import { store } from "./store";
+import { store } from "../shared/store";
 import { startTracking } from "./track-components";
 
 

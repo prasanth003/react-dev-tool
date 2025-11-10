@@ -1,4 +1,4 @@
-import { store } from "./store";
+import { store } from "../shared/store";
 
 let highlightOverlay: HTMLElement | null = null;
 

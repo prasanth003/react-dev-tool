@@ -1,4 +1,4 @@
-import type { ComponentData } from "../shared/types";
+import type { ComponentData } from "./types";
 
 export class TrackStore {
 

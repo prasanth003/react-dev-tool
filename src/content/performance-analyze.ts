@@ -6,7 +6,6 @@ export function analyzePerformance(componentData: Map<string, ComponentData>): P
     for (const [id, data] of componentData.entries()) {
         
         if (data.averageRenderTime > 16) {
-            console.log(`⚠️ SLOW RENDER: ${data.name} - ${data.averageRenderTime}ms`);
             issues.push({
                 componentId: id,
                 componentName: data.name,
@@ -18,7 +17,6 @@ export function analyzePerformance(componentData: Map<string, ComponentData>): P
         }
         
         if (data.renderCount > 20) {
-            console.log(`⚠️ EXCESSIVE RENDERS: ${data.name} - ${data.renderCount} times`);
             issues.push({
                 componentId: id,
                 componentName: data.name,
