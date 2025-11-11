@@ -29,3 +29,9 @@ export type PerformanceIssue = {
     message: string;
     suggestion: string;
 }
+
+export type Theme = 'light' | 'dark' | 'system';
+
+export type ThemeContextType = {
+    theme: Theme;
+};

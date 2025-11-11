@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
+  darkMode: ["class"], // Only dark mode via class
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -9,45 +9,54 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        devtools: ["'Fira Code'", "monospace"],
+      },
+      fontSize: {
+        xs: ['11px', { lineHeight: '16px' }],
+        sm: ['12px', { lineHeight: '18px' }],
+        base: ['13px', { lineHeight: '20px' }],
+        lg: ['14px', { lineHeight: '21px' }],
+      },
       colors: {
-        border: "hsl(214.3 31.8% 91.4%)",
-        input: "hsl(214.3 31.8% 91.4%)",
-        ring: "hsl(222.2 84% 4.9%)",
-        background: "hsl(0 0% 100%)",
-        foreground: "hsl(222.2 84% 4.9%)",
+        border: "#3A3F45",
+        input: "#2A2F33",
+        ring: "#0088FF",
+        background: "#212728",
+        foreground: "#EDEDED",
         primary: {
-          DEFAULT: "hsl(262.1 83.3% 57.8%)",
-          foreground: "hsl(210 40% 98%)",
+          DEFAULT: "#3399FF",
+          foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "hsl(210 40% 96.1%)",
-          foreground: "hsl(222.2 47.4% 11.2%)",
+          DEFAULT: "#2A2F33",
+          foreground: "#CCCCCC",
         },
         destructive: {
-          DEFAULT: "hsl(0 84.2% 60.2%)",
-          foreground: "hsl(210 40% 98%)",
+          DEFAULT: "#FF5555",
+          foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "hsl(210 40% 96.1%)",
-          foreground: "hsl(215.4 16.3% 46.9%)",
+          DEFAULT: "#2C2F34",
+          foreground: "#999999",
         },
         accent: {
-          DEFAULT: "hsl(210 40% 96.1%)",
-          foreground: "hsl(222.2 47.4% 11.2%)",
+          DEFAULT: "#33383D",
+          foreground: "#EDEDED",
         },
         popover: {
-          DEFAULT: "hsl(0 0% 100%)",
-          foreground: "hsl(222.2 84% 4.9%)",
+          DEFAULT: "#212728",
+          foreground: "#EDEDED",
         },
         card: {
-          DEFAULT: "hsl(0 0% 100%)",
-          foreground: "hsl(222.2 84% 4.9%)",
+          DEFAULT: "#2A2F33",
+          foreground: "#EDEDED",
         },
       },
       borderRadius: {
-        lg: "0.5rem",
-        md: "calc(0.5rem - 2px)",
-        sm: "calc(0.5rem - 4px)",
+        lg: "0.25rem",
+        md: "0.25rem",
+        sm: "0.125rem",
       },
     },
   },
