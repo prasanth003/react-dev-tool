@@ -11,22 +11,28 @@ function App() {
   return (
     <>
 
-      <Header />
+      <div className='fixed top-0 left-0 w-full z-10 bg-background'>
+        <Header />
+      </div>
 
-      <Stats />
+      <div className='mt-9'>
 
-      <div className='flex h-full'>
+        <Stats />
 
-        <div className='w-40 border-r border-[#cccccc1f] text-left'>
-          <Sidebar />
-        </div>
+        <div className='flex h-full'>
 
-        <div className='flex-1'>
-          <ComponentTable />
+          <div className='w-40 border-r border-[#cccccc1f] text-left'>
+            <Sidebar />
+          </div>
+
+          <div className='flex-1'>
+            <ComponentTable />
+          </div>
+
         </div>
 
       </div>
-     
+
     </>
   )
 }

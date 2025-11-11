@@ -179,7 +179,7 @@ export function ComponentTable() {
 
       </div>
 
-      <div className="h-100 overflow-y-auto overflow-x-hidden">
+      <div className="h-[calc(100vh-170px)] min-h-36 overflow-y-auto overflow-x-hidden">
 
         <Table className="w-full border-collapse">
           
