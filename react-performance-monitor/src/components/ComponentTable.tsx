@@ -12,37 +12,20 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { ComponentData } from "@/shared/types";
 import { formatDuration, timeAgo } from "@/shared/utility";
 
-const data: ComponentData[] = Array.from({ length: 50 }, (_, i) => {
-  const renderCount = Math.floor(Math.random() * 150) + 1 // 1–150 renders
-  const totalRenderDuration = +(Math.random() * 120).toFixed(2) // 0–120 ms
-  const timestamp = Date.now() - Math.floor(Math.random() * 1000 * 60 * 10) // within last 10 min
-
-  return {
-    id: `cmp-${(i + 1).toString().padStart(3, "0")}`,
-    name: `Component_${i + 1}`,
-    renderCount,
-    timestamp,
-    totalRenderDuration,
-  }
-})
-
-console.log(data)
-
-export const columns: ColumnDef<ComponentData>[] = [
+const columns: ColumnDef<ComponentData>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          className="text-[12px]"
+          className="text-[12px] font-mono"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Component Name
@@ -51,7 +34,7 @@ export const columns: ColumnDef<ComponentData>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-[12px] text-left pl-4 min-w-150">{row.getValue("name")}</div>
+      <div className="capitalize text-[12px] text-left pl-4 min-w-150 font-mono">{row.getValue("name")}</div>
     ),
   },
   {
@@ -60,7 +43,7 @@ export const columns: ColumnDef<ComponentData>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-[12px]"
+          className="text-[12px] font-mono"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Render Count
@@ -77,7 +60,7 @@ export const columns: ColumnDef<ComponentData>[] = [
             ? "text-orange-400"
             : "text-green-400"
       return (
-        <div className={`text-[12px] text-left pl-4 font-medium ${color}`}>
+        <div className={`text-[12px] text-left pl-4 font-medium font-mono ${color}`}>
           {value}
         </div>
       )
@@ -89,7 +72,7 @@ export const columns: ColumnDef<ComponentData>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-[12px]"
+          className="text-[12px] font-mono"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Render Duration
@@ -108,7 +91,7 @@ export const columns: ColumnDef<ComponentData>[] = [
             : ""
 
       return (
-        <div className={`text-[12px] text-left pl-4 font-medium ${color}`}>
+        <div className={`text-[12px] text-left pl-4 font-mono font-medium ${color}`}>
           {formatDuration(duration)}
         </div>
       )
@@ -120,7 +103,7 @@ export const columns: ColumnDef<ComponentData>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-[12px]"
+          className="text-[12px] font-mono"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Last Rendered
@@ -131,7 +114,7 @@ export const columns: ColumnDef<ComponentData>[] = [
     cell: ({ row }) => {
       const ts = row.getValue("timestamp") as number
       return (
-        <div className="text-[12px] text-left pl-4 text-muted-foreground">
+        <div className="text-[12px] text-left pl-4 font-mono text-muted-foreground">
           {timeAgo(ts)}
         </div>
       )
@@ -139,10 +122,25 @@ export const columns: ColumnDef<ComponentData>[] = [
   }
 ]
 
-export function ComponentTable() {
+type Props = {
+  data: ComponentData[];
+  onHoverComponent?: (componentId: string | null) => void;
+  onUnhoverComponent?: () => void;
+}
+
+export function ComponentTable({ data = [], onHoverComponent, onUnhoverComponent  }: Props) {
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+  const handleMouseEnter = (id: string) => {
+    onHoverComponent?.(id);
+  };
+
+  const handleMouseLeave = () => {
+    onUnhoverComponent?.();
+  };
+
 
   const table = useReactTable({
     data,
@@ -164,9 +162,10 @@ export function ComponentTable() {
 
       <div className="flex items-center justify-between border-b border-[#cccccc1f]  text-sm text-primary font-medium">
 
-        <InputGroup className="border-0 text-[12px]">
+        <InputGroup className="font-mono border-0 text-[10px]">
           <InputGroupInput
             placeholder="Search component name..."
+            className="text-[12px]"
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(e) => table.getColumn("name")?.setFilterValue(e.target.value)}
           />
@@ -205,6 +204,8 @@ export function ComponentTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onMouseEnter={() => handleMouseEnter(row.id)}
+                  onMouseLeave={() => handleMouseLeave() }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell

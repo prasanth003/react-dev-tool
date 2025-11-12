@@ -1,22 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { useState } from "react";
 
-type Tab = "overview" | "issues" | "performance";
+export type Tab = "overview" | "issues" | "performance";
 
 type TabProps = {
     id: Tab;
     label: string;
 }
 
-export function Sidebar() {
+type SidebarProps = {
+    activeTab: Tab;
+    setActiveTab: (tab: Tab) => void;
+}
 
-    const [activeTab, setActiveTab] = useState<Tab>("overview");
+export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
 
     const tabs: TabProps[] = [
         { id: "overview", label: "Overview" },
         { id: "issues", label: "Issues" },
-        { id: "performance", label: "Performance" },
+        // { id: "performance", label: "Performance" },
     ];
 
     return (
@@ -26,7 +28,7 @@ export function Sidebar() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={[
-                        "w-full text-[12px] bg-transparent text-primary",
+                        "w-full font-mono text-[12px] bg-transparent text-primary",
                         "hover:bg-accent/50 transition-colors",
                         i !== tabs.length - 1 && "border-b border-[#cccccc1f]",
                         activeTab === tab.id && "bg-accent/50 text-accent-foreground",
