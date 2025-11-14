@@ -1,6 +1,6 @@
 # Privacy Policy for React Performance Monitor
 
-**Last updated:** [Add date]
+**Last updated:** 14 Nov. 2025
 
 Thank you for using **React Performance Monitor**.  
 Your privacy is important to us. This extension analyzes React component render performance **without collecting, storing, transmitting, or sharing any personal data**.
