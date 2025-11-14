@@ -20,9 +20,13 @@ type HeaderProps = {
 export function Header({ onAction, isMonitoring }: HeaderProps) {
 
     return (
-        <div className="flex items-center justify-between border-b-1 border-[#cccccc1f] py-0 pl-4">
-
-            <h6 className="text-[#ada8a8] text-[12px] font-semibold">React Performance Monitor</h6>
+        <div className="flex items-center justify-between border-b-1 border-[#cccccc1f] py-0 pl-2">
+            
+            <div className="flex items-center">
+                <img src="icons/icon.png" alt="React Performance Monitor" className="size-6 mr-1 inline-block" />
+                <h6 className="text-[#ada8a8] text-[12px] font-semibold mt-0.5">React Performance Monitor</h6>
+            </div>
+            
 
             <ButtonGroup className="bg-transparent">
                 <Button variant={isMonitoring ? "destructive" : "default"} className="bg-transparent text-xs text-primary hover:bg-accent cursor-pointer font-mono" onClick={() => { onAction('start') }}>

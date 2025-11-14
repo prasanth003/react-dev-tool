@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "React Perf Monitor",
+  "name": "React Performance Monitor",
   "version": "1.0.0",
   "description": "React Performance Monitor",
   "devtools_page": "devtools.html",

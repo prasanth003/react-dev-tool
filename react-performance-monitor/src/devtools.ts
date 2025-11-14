@@ -1,7 +1,7 @@
 /// <reference types="chrome"/>
 
 chrome.devtools.panels.create(
-  'React Perf Monitor',
+  'React Performance Monitor',
   '',
   'panel.html',
   () => {

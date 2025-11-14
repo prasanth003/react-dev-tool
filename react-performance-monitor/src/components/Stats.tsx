@@ -1,5 +1,3 @@
-import { Separator } from "@/components/ui/separator";
-
 type Props = {
     totalRenders?: number;
     totalComponents?: number;
