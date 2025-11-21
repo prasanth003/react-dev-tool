@@ -15,12 +15,26 @@ function App() {
   const [totalRenders, setTotalRenders] = useState<number>(0);
   const [components, setComponents] = useState<ComponentData[]>([]);
   const [issues, setIssues] = useState<PerformanceIssue[]>([]);
-  const [isMonitoring, setIsMonitoring] = useState<boolean>(true);
+  const [isMonitoring, setIsMonitoring] = useState<boolean>(false);
+  const [isReactDetected, setIsReactDetected] = useState<boolean | null>(null);
 
   useEffect(() => {
 
+    // Check initial status
+    chrome.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]?.id) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: 'CHECK_REACT_STATUS'
+        });
+      }
+    });
+
     const messageListener = (message: any) => {
-      
+
+      if (message.type === 'REACT_DETECTED') {
+        setIsReactDetected(message.data.detected);
+      }
+
       if (message.type === 'COMPONENT_DATA') {
         const renderData = message.data as RenderEvents;
         console.log('Received render data:', renderData);
@@ -40,7 +54,7 @@ function App() {
   }, []);
 
   const handleAction = (action: Actions) => {
-   
+
     switch (action) {
       case 'start':
       case 'pause':
@@ -57,15 +71,15 @@ function App() {
   }
 
   const handleStartPause = () => {
-    
+
     const newState = !isMonitoring;
-    
+
     setIsMonitoring(newState);
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]?.id) {
         chrome.tabs.sendMessage(tabs[0].id, {
-          type: newState ? 'START_MONITORING': 'PAUSE_MONITORING'
+          type: newState ? 'START_MONITORING' : 'PAUSE_MONITORING'
         });
       }
     });
@@ -126,11 +140,22 @@ function App() {
   };
 
 
+  if (isReactDetected === false) {
+    return (
+      <div className="flex items-center justify-center h-screen w-full bg-background text-foreground p-4 text-center">
+        <div>
+          <h2 className="text-xl font-bold mb-2">React Not Detected</h2>
+          <p className="text-muted-foreground">This page does not appear to be using React, or the React DevTools hook is not available.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
 
       <div className='fixed top-0 left-0 w-full z-10 bg-background font-mono'>
-        <Header onAction={(action: Actions) => handleAction(action)} isMonitoring={isMonitoring}/>
+        <Header onAction={(action: Actions) => handleAction(action)} isMonitoring={isMonitoring} />
       </div>
 
       <div className='mt-9 font-mono'>
@@ -146,14 +171,19 @@ function App() {
           <div className='flex-1'>
 
             {
-              activeTab === "overview" ?
-                <ComponentTable
-                  data={components}
-                  onHoverComponent={(id: string | null) => handleMouseEnter(id)}
-                  onUnhoverComponent={() => handleMouseLeave()}
-                /> :
-                activeTab === "issues" ? <Issues issues={issues} /> :
-                  <div className='p-4 text-sm text-muted-foreground'>Performance data is not available.</div>
+              !isMonitoring && totalRenders === 0 ? (
+                <div className="flex items-center justify-center h-64 text-muted-foreground">
+                  <p>Please click Start to begin monitoring</p>
+                </div>
+              ) :
+                activeTab === "overview" ?
+                  <ComponentTable
+                    data={components}
+                    onHoverComponent={(id: string | null) => handleMouseEnter(id)}
+                    onUnhoverComponent={() => handleMouseLeave()}
+                  /> :
+                  activeTab === "issues" ? <Issues issues={issues} /> :
+                    <div className='p-4 text-sm text-muted-foreground'>Performance data is not available.</div>
             }
 
 

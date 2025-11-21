@@ -2,7 +2,7 @@ import { getComponentId, getComponentName } from "./component-name";
 import { sendComponentData } from "./main-world";
 import { store } from "@/shared/store";
 
-let isPaused = false;
+let isPaused = true;
 let operationsListener: any = null;
 
 export function startTracking() {
@@ -30,8 +30,8 @@ export function startTracking() {
     }
 
     operationsListener = () => {
-        if (isPaused) return; 
-        
+        if (isPaused) return;
+
         try {
             parseOperations();
         } catch (error) {
@@ -74,7 +74,7 @@ function walkFiberTree() {
         let fiberRoot = null;
 
         const commonRootIds = ['root', '__next', 'app', 'react-root', 'main'];
-        
+
         for (const id of commonRootIds) {
             const element = document.getElementById(id);
             if (element) {
@@ -88,11 +88,11 @@ function walkFiberTree() {
 
         if (!fiberRoot) {
             const allDivs = document.querySelectorAll('div');
-            
+
             for (let i = 0; i < Math.min(allDivs.length, 50); i++) {
                 const element = allDivs[i];
                 const fiber = findFiberOnElement(element);
-                
+
                 if (fiber) {
                     fiberRoot = fiber;
                     break;
@@ -104,9 +104,9 @@ function walkFiberTree() {
             console.log('No fiber found on any element');
             return;
         }
-        
+
         traverseFiber(fiberRoot, 0);
-        
+
     } catch (error) {
         console.error('Error walking fiber tree:', error);
     }
@@ -114,18 +114,18 @@ function walkFiberTree() {
 
 
 function findFiberOnElement(element: Element): any {
-   
+
     const keys = Object.keys(element);
-    const fiberKey = keys.find(key => 
+    const fiberKey = keys.find(key =>
         key.startsWith('__reactFiber') ||
         key.startsWith('__reactInternalInstance') ||
         key.startsWith('__reactContainer')
     );
-    
+
     if (fiberKey) {
         return (element as any)[fiberKey];
     }
-    
+
     return null;
 }
 
@@ -134,7 +134,7 @@ function traverseFiber(fiber: any, depth = 0) {
     if (!fiber) return;
 
     try {
-        
+
         const componentName = getComponentName(fiber);
 
         if (componentName) {
@@ -182,15 +182,15 @@ function traverseFiber(fiber: any, depth = 0) {
 
 function getRenderDuration(fiber: any): number {
     try {
- 
+
         if (fiber.actualDuration !== undefined) {
             return fiber.actualDuration;
         }
-        
+
         if (fiber.selfBaseDuration !== undefined) {
             return fiber.selfBaseDuration;
         }
-        
+
         return 0;
     } catch {
         return 0;

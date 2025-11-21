@@ -1,5 +1,5 @@
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { ArrowUpDown, Search } from "lucide-react";
+import { ArrowUpDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Search } from "lucide-react";
 
 import {
   type ColumnDef,
@@ -7,6 +7,7 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   type SortingState,
   useReactTable,
@@ -98,6 +99,60 @@ const columns: ColumnDef<ComponentData>[] = [
     },
   },
   {
+    accessorKey: "averageRenderTime",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="text-[12px] font-mono"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Avg Time
+          <ArrowUpDown className="size-3" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const duration = row.getValue("averageRenderTime") as number
+      return (
+        <div className="text-[12px] text-left pl-4 font-mono font-medium">
+          {formatDuration(duration)}
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "slowestRender",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="text-[12px] font-mono"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Max Time
+          <ArrowUpDown className="size-3" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const duration = row.getValue("slowestRender") as number
+      const seconds = duration / 1000
+      const color =
+        seconds > 1
+          ? "text-red-500"
+          : seconds > 0.5
+            ? "text-orange-400"
+            : ""
+
+      return (
+        <div className={`text-[12px] text-left pl-4 font-mono font-medium ${color}`}>
+          {formatDuration(duration)}
+        </div>
+      )
+    },
+  },
+  {
     accessorKey: "timestamp",
     header: ({ column }) => {
       return (
@@ -128,7 +183,7 @@ type Props = {
   onUnhoverComponent?: () => void;
 }
 
-export function ComponentTable({ data = [], onHoverComponent, onUnhoverComponent  }: Props) {
+export function ComponentTable({ data = [], onHoverComponent, onUnhoverComponent }: Props) {
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -150,6 +205,7 @@ export function ComponentTable({ data = [], onHoverComponent, onUnhoverComponent
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     state: {
       sorting,
       columnFilters
@@ -180,7 +236,7 @@ export function ComponentTable({ data = [], onHoverComponent, onUnhoverComponent
       <div className="h-[calc(100vh-170px)] min-h-36 overflow-y-auto overflow-x-hidden">
 
         <Table className="w-full border-collapse">
-          
+
           <TableHeader className="sticky top-0 bg-background z-10 shadow-sm">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -205,7 +261,7 @@ export function ComponentTable({ data = [], onHoverComponent, onUnhoverComponent
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onMouseEnter={() => handleMouseEnter(row.id)}
-                  onMouseLeave={() => handleMouseLeave() }
+                  onMouseLeave={() => handleMouseLeave()}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -233,6 +289,51 @@ export function ComponentTable({ data = [], onHoverComponent, onUnhoverComponent
           </TableBody>
         </Table>
 
+      </div>
+
+      <div className="flex items-center justify-end space-x-2 py-2 border-t border-[#cccccc1f]">
+        <div className="flex-1 text-xs text-muted-foreground pl-2">
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()}
+        </div>
+        <div className="space-x-1 pr-2">
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <span className="sr-only">Go to first page</span>
+            <ChevronsLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <span className="sr-only">Go to previous page</span>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <span className="sr-only">Go to next page</span>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            <span className="sr-only">Go to last page</span>
+            <ChevronsRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
     </>

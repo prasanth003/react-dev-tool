@@ -53,6 +53,10 @@ chrome.runtime.onMessage.addListener((message) => {
             type: 'PAUSE_MONITORING'
         }, '*');
     }
+
+    if (message.type === 'CHECK_REACT_STATUS') {
+        requestDetection();
+    }
 });
 
 if (document.readyState === 'loading') {

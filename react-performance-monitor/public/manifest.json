@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "React Performance Monitor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React Performance Monitor",
   "devtools_page": "devtools.html",
   "icons": {
@@ -15,7 +15,9 @@
         "http://localhost/*",
         "http://127.0.0.1/*"
       ],
-      "js": ["content.js"],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_end"
     },
     {
@@ -23,7 +25,9 @@
         "http://localhost/*",
         "http://127.0.0.1/*"
       ],
-      "js": ["main-world.js"],
+      "js": [
+        "main-world.js"
+      ],
       "run_at": "document_start",
       "world": "MAIN"
     }
