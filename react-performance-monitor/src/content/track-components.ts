@@ -2,8 +2,8 @@ import { getComponentId, getComponentName } from "./component-name";
 import { sendComponentData } from "./main-world";
 import { store } from "@/shared/store";
 
-let isPaused = true;
-let operationsListener: any = null;
+let isPaused = false; // Start unpaused by default since we only start tracking when React is detected
+let originalOnCommitFiberRoot: any = null;
 
 export function startTracking() {
 
@@ -14,59 +14,73 @@ export function startTracking() {
         return;
     }
 
-    const renderers = hook.renderers || new Map();
-
-    if (renderers.size === 0) {
+    // If renderers are not ready yet, wait a bit
+    if (!hook.renderers || hook.renderers.size === 0) {
         setTimeout(() => {
-            if (hook.renderers && hook.renderers.size > 0) {
-                startTracking();
-            }
+            startTracking();
         }, 1000);
         return;
     }
 
-    if (operationsListener) {
-        hook.removeListener('operations', operationsListener);
+    // Initial scan to populate data
+    if (import.meta.env.DEV) {
+        console.log('🌲 Initial fiber tree walk...');
     }
+    walkFiberTree();
+    sendComponentData();
 
-    operationsListener = () => {
-        if (isPaused) return;
-
-        try {
-            parseOperations();
-        } catch (error) {
-            console.error('Error parsing operations:', error);
+    // Patch onCommitFiberRoot to detect updates
+    if (hook.onCommitFiberRoot && hook.onCommitFiberRoot !== onCommitFiberRootHandler) {
+        originalOnCommitFiberRoot = hook.onCommitFiberRoot;
+        hook.onCommitFiberRoot = onCommitFiberRootHandler;
+        if (import.meta.env.DEV) {
+            console.log('👂 Attached onCommitFiberRoot listener');
         }
-    };
-
-    hook.on('operations', operationsListener);
+    } else if (!hook.onCommitFiberRoot) {
+        // If it doesn't exist, define it
+        hook.onCommitFiberRoot = onCommitFiberRootHandler;
+        if (import.meta.env.DEV) {
+            console.log('👂 Created onCommitFiberRoot listener');
+        }
+    }
 
 }
 
+function onCommitFiberRootHandler(rendererID: any, root: any, priorityLevel: any, didError: any) {
+
+    // Call original if it exists
+    if (originalOnCommitFiberRoot) {
+        originalOnCommitFiberRoot(rendererID, root, priorityLevel, didError);
+    }
+
+    if (isPaused) return;
+
+    try {
+        // console.log('⚡ Commit detected');
+        store.incrementRenderCount();
+
+        if (root && root.current) {
+            traverseFiber(root.current);
+            sendComponentData();
+        }
+    } catch (error) {
+        console.error('Error handling commit:', error);
+    }
+}
+
 export function pauseTracking() {
+    if (import.meta.env.DEV) {
+        console.log('⏸️ Tracking paused');
+    }
     isPaused = true;
 }
 
 export function resumeTracking() {
+    if (import.meta.env.DEV) {
+        console.log('▶️ Tracking resumed');
+    }
     isPaused = false;
 }
-
-function parseOperations() {
-
-    store.incrementRenderCount();
-
-    const hook = (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__;
-    const renderers = hook.renderers || new Map();
-
-    const renderer = Array.from(renderers.values())[0] as any;
-
-    if (!renderer) return;
-
-    walkFiberTree();
-
-    sendComponentData();
-}
-
 
 function walkFiberTree() {
     try {

@@ -1,36 +1,36 @@
 export function getComponentName(fiber: any): string | null {
     try {
         const type = fiber.type;
-        
+
         if (!type) return null;
-        
+
         if (typeof type === 'string') {
             return null;
         }
-        
+
         let name = null;
-        
+
         if (type.displayName) {
             name = type.displayName;
         } else if (type.name && type.name !== 'Unknown') {
             name = type.name;
         } else if (type.$$typeof) {
             const typeofSymbol = type.$$typeof.toString();
-            
+
             if (typeofSymbol.includes('memo')) {
-                if (type.type && type.type.name) {
+                if (type.type?.name) {
                     name = `Memo(${type.type.name})`;
                 } else {
                     name = 'Memo(Anonymous)';
                 }
             } else if (typeofSymbol.includes('forward_ref')) {
-                if (type.render && type.render.name) {
+                if (type.render?.name) {
                     name = `ForwardRef(${type.render.name})`;
                 } else {
                     name = 'ForwardRef';
                 }
             }
-        } else if (fiber.elementType && fiber.elementType.name) {
+        } else if (fiber.elementType?.name) {
             name = fiber.elementType.name;
         } else if (fiber._debugSource) {
             const fileName = fiber._debugSource.fileName;
@@ -41,7 +41,7 @@ export function getComponentName(fiber: any): string | null {
                 }
             }
         }
-        
+
         if (!name) {
             const tag = fiber.tag;
             switch (tag) {
@@ -59,14 +59,14 @@ export function getComponentName(fiber: any): string | null {
                     return null;
             }
         }
-        
+
         if (name) {
 
             name = name.replace(/[^a-zA-Z0-9_$]/g, '');
 
             if (name.length <= 2) {
-                
-                if (fiber._debugOwner && fiber._debugOwner.type) {
+
+                if (fiber._debugOwner?.type) {
                     const ownerName = fiber._debugOwner.type.name;
                     if (ownerName && ownerName.length > 2) {
                         name = `${ownerName}.${name}`;
@@ -78,9 +78,9 @@ export function getComponentName(fiber: any): string | null {
                 }
             }
         }
-        
+
         return name || null;
-        
+
     } catch (error) {
         return null;
     }

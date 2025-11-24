@@ -140,39 +140,29 @@ function App() {
   };
 
 
-  if (isReactDetected === false) {
-    return (
-      <div className="flex items-center justify-center h-screen w-full bg-background text-foreground p-4 text-center">
-        <div>
-          <h2 className="text-xl font-bold mb-2">React Not Detected</h2>
-          <p className="text-muted-foreground">This page does not appear to be using React, or the React DevTools hook is not available.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <>
+    <div className="relative min-h-screen w-full bg-background text-foreground font-mono">
 
-      <div className='fixed top-0 left-0 w-full z-10 bg-background font-mono'>
+      {/* Main UI - Always rendered but covered if not detected */}
+      <div className='fixed top-0 left-0 w-full z-10 bg-background border-b border-[#cccccc1f]'>
         <Header onAction={(action: Actions) => handleAction(action)} isMonitoring={isMonitoring} />
       </div>
 
-      <div className='mt-9 font-mono'>
+      <div className='pt-10 pb-4'>
 
         <Stats totalComponents={components?.length} totalRenders={totalRenders} totalIssues={issues?.length} />
 
-        <div className='flex h-full'>
+        <div className='flex h-[calc(100vh-80px)]'>
 
           <div className='w-40 border-r border-[#cccccc1f] text-left'>
             <Sidebar activeTab={activeTab} setActiveTab={(tab: Tab) => setActiveTab(tab)} />
           </div>
 
-          <div className='flex-1'>
+          <div className='flex-1 overflow-hidden'>
 
             {
               !isMonitoring && totalRenders === 0 ? (
-                <div className="flex items-center justify-center h-64 text-muted-foreground">
+                <div className="flex items-center justify-center h-full text-muted-foreground">
                   <p>Please click Start to begin monitoring</p>
                 </div>
               ) :
@@ -186,14 +176,42 @@ function App() {
                     <div className='p-4 text-sm text-muted-foreground'>Performance data is not available.</div>
             }
 
-
           </div>
 
         </div>
 
       </div>
 
-    </>
+      {/* Overlay for Non-React Apps or Loading */}
+      {(isReactDetected === false || isReactDetected === null) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm">
+          <div className="max-w-md p-6 text-center space-y-4">
+            {isReactDetected === null ? (
+              <>
+                <h2 className="text-xl font-bold">Connecting to React...</h2>
+                <p className="text-muted-foreground">Waiting for React DevTools hook...</p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-xl font-bold text-destructive">React Not Detected</h2>
+                <p className="text-muted-foreground">
+                  This page does not appear to be using React, or the React DevTools hook is not available.
+                </p>
+                <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md text-left font-mono mt-4">
+                  <p className="font-bold mb-1">Troubleshooting:</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Ensure this is a React application (v16+)</li>
+                    <li>Make sure you are using a development build</li>
+                    <li>Refresh the page and try again</li>
+                  </ul>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+    </div>
   )
 }
 
