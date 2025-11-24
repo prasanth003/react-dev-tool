@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# 🚀 React Performance Monitor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Optimize your React applications with precision.**
 
-Currently, two official plugins are available:
+React Performance Monitor is a powerful Chrome extension designed to help developers visualize, analyze, and optimize the rendering performance of their React applications in real-time.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[![Download on Chrome Web Store](https://img.shields.io/badge/Download%20on-Chrome%20Web%20Store-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/react-performance-monitor/mphlfmbiaifobpihmdccdngfnocmbleb?authuser=0&hl=en)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🌟 Key Features
 
-## Expanding the ESLint configuration
+- **📊 Real-Time Render Tracking**: Instantly see how many times each component renders.
+- **⏱️ Precision Timing**: Monitor average, total, and slowest render times for every component.
+- **🔍 Visual Debugging**: Hover over any component in the list to highlight it directly on your page.
+- **📉 Issue Detection**: Automatically identify potential performance bottlenecks and unnecessary re-renders.
+- **💾 Data Export**: Export your performance sessions for detailed analysis or team sharing.
+- **⚡ Zero Config**: Works out of the box with any React 16+ application (Development builds recommended).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📥 Installation
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1.  Go to the **[Chrome Web Store](https://chromewebstore.google.com/detail/react-performance-monitor/mphlfmbiaifobpihmdccdngfnocmbleb?authuser=0&hl=en)**.
+2.  Click **"Add to Chrome"**.
+3.  Navigate to your React application.
+4.  Open the Chrome DevTools (`F12` or `Cmd+Option+I` on Mac).
+5.  Click on the **"React Perf"** tab to start monitoring!
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠️ How to Use
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  **Start Monitoring**: Click the "Start" button in the extension panel.
+2.  **Interact**: Use your application as you normally would. The monitor will track all component updates.
+3.  **Analyze**:
+    *   **Overview Tab**: Sort by "Render Count" or "Render Duration" to find expensive components.
+    *   **Issues Tab**: Check for specific performance warnings.
+4.  **Inspect**: Hover over a row in the table to see exactly where that component is on the page.
+5.  **Optimize**: Use the insights to memoize components (`React.memo`), optimize hooks (`useMemo`, `useCallback`), or fix state management issues.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ❓ Troubleshooting
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+*   **"React Not Detected"**: Ensure you are running a React application (v16 or higher).
+*   **No Data**: Make sure you are using a **development build** of React. Production builds often strip out the necessary hooks for performance monitoring.
+*   **Connection Issues**: Try refreshing the page after opening the DevTools.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+<div align="center">
+  <p>Made with ❤️ for the React Community</p>
+</div>
