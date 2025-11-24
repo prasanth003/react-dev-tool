@@ -1,68 +1,48 @@
-# React Dev Tool
+# 🚀 React Performance Monitor
 
-A Chrome DevTools extension and panel for visualizing and diagnosing performance issues in React applications.
+**Optimize your React applications with precision.**
 
-## 🚀 What it does  
-- Adds a custom DevTools panel in Chrome (via Manifest V3) to inspect React component performance.  
-- Tracks and reports metrics such as render counts, re‑renders, component update durations, and slow operations.  
-- Offers both a standalone extension popup and an embedded DevTools view — making it easy to debug performance without leaving your browser’s dev workflow.  
-- Built with React, TypeScript, Vite and optimized for Chrome extension development.
+React Performance Monitor is a powerful Chrome extension designed to help developers visualize, analyze, and optimize the rendering performance of their React applications in real-time.
 
-## 🧩 Why use this  
-- Quickly identify inefficient re‑renders or unexpected updates in your React tree.  
-- Integrate performance insights directly into your browser, rather than relying solely on external profiling tools.  
-- Lightweight and extension‑native: minimal overhead, just plug into your app and start exploring render behaviour.
+[![Download on Chrome Web Store](https://img.shields.io/badge/Download%20on-Chrome%20Web%20Store-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/react-performance-monitor/mphlfmbiaifobpihmdccdngfnocmbleb?authuser=0&hl=en)
 
-## 📦 Tech stack  
-- React + TypeScript for UI components  
-- Vite for fast local development & bundling  
-- Chrome Extension (Manifest V3) to create the DevTools panel  
-- Tailwind (optional) for styling (or adjust if you used a different system)  
-- Custom hooks or instrumentation logic to capture render metrics  
+---
 
-## 🛠️ Getting started  
-1. Clone the repo:  
-   ```bash
-   git clone https://github.com/prasanth003/react-dev-tool.git  
-   cd react-dev-tool
+## 🌟 Key Features
 
-2.	Install dependencies:
-   ```bash
-   npm install
-   ```
+- **📊 Real-Time Render Tracking**: Instantly see how many times each component renders.
+- **⏱️ Precision Timing**: Monitor average, total, and slowest render times for every component.
+- **🔍 Visual Debugging**: Hover over any component in the list to highlight it directly on your page.
+- **📉 Issue Detection**: Automatically identify potential performance bottlenecks and unnecessary re-renders.
+- **💾 Data Export**: Export your performance sessions for detailed analysis or team sharing.
+- **⚡ Zero Config**: Works out of the box with any React 16+ application (Development builds recommended).
 
-3. Build for production:
-   ```bash
-   npm run build
-   ```
+## 📥 Installation
 
-4. Load the extension in Chrome:
+1.  Go to the **[Chrome Web Store](https://chromewebstore.google.com/detail/react-performance-monitor/mphlfmbiaifobpihmdccdngfnocmbleb?authuser=0&hl=en)**.
+2.  Click **"Add to Chrome"**.
+3.  Navigate to your React application.
+4.  Open the Chrome DevTools (`F12` or `Cmd+Option+I` on Mac).
+5.  Click on the **"React Perf"** tab to start monitoring!
 
-   - Go to chrome://extensions/
-	- Enable Developer mode
-	- Click Load unpacked and select the dist/ (or build output) folder
-	- Open your React app, then open DevTools and switch to the “React Dev Tool” panel.
+## 🛠️ How to Use
 
+1.  **Start Monitoring**: Click the "Start" button in the extension panel.
+2.  **Interact**: Use your application as you normally would. The monitor will track all component updates.
+3.  **Analyze**:
+    *   **Overview Tab**: Sort by "Render Count" or "Render Duration" to find expensive components.
+    *   **Issues Tab**: Check for specific performance warnings.
+4.  **Inspect**: Hover over a row in the table to see exactly where that component is on the page.
+5.  **Optimize**: Use the insights to memoize components (`React.memo`), optimize hooks (`useMemo`, `useCallback`), or fix state management issues.
 
-## 📋 Usage
-- With your React app open in the browser, open DevTools (⌘ + Option + I on macOS / Ctrl + Shift + I on Windows).
-- Select the “React Dev Tool” panel (or whatever name you defined).
-- View the performance metrics: render durations, update counts, component tree state.
-- Use filters or search to focus on specific sub‑trees or components.
-- Identify slow components or frequent re‑renders, then inspect and optimize.
+## ❓ Troubleshooting
 
-## 🧪 Tips for optimization
-- Keep your render tree shallow and avoid passing new object/array props unintentionally.
-- Memoize components using React.memo or use callback refs/handlers intelligently.
-- Use profiling tools (React Profiler) in parallel to this extension for deeper dives.
-- Use this tool iteratively during development, not just at the end, so you catch issues early.
+*   **"React Not Detected"**: Ensure you are running a React application (v16 or higher).
+*   **No Data**: Make sure you are using a **development build** of React. Production builds often strip out the necessary hooks for performance monitoring.
+*   **Connection Issues**: Try refreshing the page after opening the DevTools.
 
-## ❗ Known limitations
-- Works with React applications only (currently versions 16.8+ with hooks).
-- Extensions may be subject to browser security policies — in some cases you’ll need to enable “Allow access to file URLs” if debugging local files.
-- Metrics are approximate and designed for quick insights, not exact performance certification.
+---
 
-## 🤝 Contribution
-
-Feel free to fork the project, raise issues, or propose enhancements. Pull requests are welcome — please follow the existing code style and include tests for new instrumentation logic where possible.
-   
+<div align="center">
+  <p>Made with ❤️ for the React Community</p>
+</div>
